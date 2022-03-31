@@ -26,7 +26,7 @@ router.post('/'
     //Middlewares
     , [
         check('email', 'El email es un campo requerido.').isEmail(),
-        check('passw', 'La clave debe ser mayor a 6 dígitos.').isLength({ min: 6 }),
+        check('password', 'La clave debe ser mayor a 6 dígitos.').isLength({ min: 6 }),
         validarCampos
     ], loginUsr);
 
@@ -35,7 +35,7 @@ router.post('/new'
     , [
         check('name', 'El nombre es un campo requerido.').not().isEmpty(),
         check('email', 'El email es un campo requerido.').isEmail(),
-        check('passw', 'La clave debe ser mayor a 6 dígitos.').isLength({ min: 6 }),
+        check('password', 'La clave debe ser mayor a 6 dígitos.').isLength({ min: 6 }),
         validarCampos
     ], crearUsuario);
 
