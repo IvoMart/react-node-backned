@@ -1,8 +1,13 @@
 //@ts-ignore
 const express = require('express');
+const { dbConn } = require('./db/config');
 require('dotenv').config();
 
 const app = express();
+/**
+ * DB
+ */
+const dbConnection = dbConn();
 app.use(express.json()) //parsing application/json
 app.use(express.urlencoded({ extended: true })) //parsing application/x-www-form-urlencoded
 app.use(express.static('public'));
