@@ -11,6 +11,7 @@ const { check } = require('express-validator');
 
 //@ts-ignore
 const { validarCampos } = require('../middlewares/validar-campos')
+const { validarJWT } = require('../middlewares/validar-jwt')
 const {
     crearUsuario,
     loginUsr,
@@ -39,7 +40,7 @@ router.post('/new'
         validarCampos
     ], crearUsuario);
 
-router.get('/reauth', revalidarToken);
+router.get('/reauth', validarJWT, revalidarToken);
 
 //@ts-ignore
 module.exports = router;

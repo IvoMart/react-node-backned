@@ -12,7 +12,6 @@ const crearUsuario = async(req, res = response) => {
         let usuario = await Usuario.findOne({ email });
 
         if (usuario) {
-            //console.log(usuario);
             return res.status(400).json({
                 Ok: false,
                 msg: 'El email ya está registrado',
@@ -27,7 +26,7 @@ const crearUsuario = async(req, res = response) => {
 
         await usuario.save();
         // Generar JWT para el acceso
-        console.warn(usuario.id, usuario.name);
+        // console.warn(usuario.id, usuario.name);
 
         const tokenV = await generarJWT(usuario.id, usuario.name);
 
@@ -68,7 +67,7 @@ const loginUsr = async(req, res = response) => {
         }
 
         // Generar JWT para el acceso
-        console.warn(usuario.id, usuario.name);
+        // console.warn(usuario.id, usuario.name);
         const tokenV = await generarJWT(usuario.id, usuario.name);
 
         res.json({
@@ -87,10 +86,17 @@ const loginUsr = async(req, res = response) => {
 
 };
 
-const revalidarToken = (req, res = response) => {
+const revalidarToken = async(req, res = response) => {
+    const { uid, name } = req;
+
+    // Generar JWT para el acceso
+    // console.warn(uid, name);
+    const tokenV = await generarJWT(uid, name);
+
     res.json({
         Ok: true,
-        msg: 'renew'
+        msg: 'renew',
+        tokenV
     })
 };
 
