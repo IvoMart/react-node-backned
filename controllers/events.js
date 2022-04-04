@@ -4,10 +4,18 @@ const Evento = require('../models/Eventos')
 
 
 
-const obtenerEvento = (req, res = response) => {
+const obtenerEvento = async(req, res = response) => {
+    const eventos = await Evento
+        .find()
+        .populate('user', [
+            'name',
+            'email'
+        ]);
+
     res.json({
         ok: true,
-        msg: 'obtenerEvento'
+        msg: 'obtenerEvento',
+        eventos
     })
 };
 const crearEvento = async(req, res = response) => {
