@@ -1,5 +1,6 @@
 const { response } = require('express');
 const { generarJWT } = require('../helpers/jwtAccessControl');
+const Evento = require('../models/Eventos')
 
 
 
@@ -9,12 +10,29 @@ const obtenerEvento = (req, res = response) => {
         msg: 'obtenerEvento'
     })
 };
-const crearEvento = (req, res = response) => {
+const crearEvento = async(req, res = response) => {
     // console.log(req.body);
-    res.json({
-        ok: true,
-        msg: 'crearEvento'
-    })
+    const evento = new Evento(req.body);
+
+    try {
+
+        evento.user = req.uid;
+
+        await evento.save();
+
+        res.json({
+            ok: true,
+            msg: 'crearEvento',
+            evento
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            Ok: false,
+            msg: 'Por favor comuniquese con el Administrador del sitio.'
+        });
+    }
 };
 const actualizarEvento = (req, res = response) => {
     res.json({
