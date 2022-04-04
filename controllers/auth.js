@@ -2,6 +2,7 @@
 const { response } = require('express');
 const bcrypt = require('bcryptjs');
 const Usuario = require('../models/Usuarios');
+const { generarJWT } = require('../helpers/jwtAccessControl')
 
 
 const crearUsuario = async(req, res = response) => {
@@ -11,7 +12,7 @@ const crearUsuario = async(req, res = response) => {
         let usuario = await Usuario.findOne({ email });
 
         if (usuario) {
-            console.log(usuario);
+            //console.log(usuario);
             return res.status(400).json({
                 Ok: false,
                 msg: 'El email ya está registrado',
@@ -25,10 +26,16 @@ const crearUsuario = async(req, res = response) => {
         usuario.password = bcrypt.hashSync(password, salt);
 
         await usuario.save();
+        // Generar JWT para el acceso
+        console.warn(usuario.id, usuario.name);
+
+        const tokenV = await generarJWT(usuario.id, usuario.name);
 
         res.status(201).json({
             Ok: true,
-            msg: 'register',
+            uid: usuario.id,
+            name: usuario.name,
+            tokenV
         });
     } catch (error) {
         console.log(error);
@@ -59,11 +66,17 @@ const loginUsr = async(req, res = response) => {
                 msg: 'Contraseña incorrecta.'
             });
         }
+
+        // Generar JWT para el acceso
+        console.warn(usuario.id, usuario.name);
+        const tokenV = await generarJWT(usuario.id, usuario.name);
+
         res.json({
             Ok: true,
             msg: 'login',
             uid: usuario.id,
-            name: usuario.name
+            name: usuario.name,
+            tokenV
         })
     } catch (error) {
         res.status(500).json({
