@@ -15,6 +15,7 @@ app.use(express.static('public'));
 //RUTAS
 //@ts-ignore
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/events', require('./routes/events'));
 
 // Lectura y Parseo del body:
 app.use(express.json());
