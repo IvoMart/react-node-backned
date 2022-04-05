@@ -35,7 +35,14 @@ router.post('/',
     ], crearEvento);
 
 // Actualizar Evento
-router.put('/:id', actualizarEvento);
+router.put('/:id',
+    // Middleware
+    [
+        check('title', 'El Titulo es un campo requerido.').not().isEmpty(),
+        check('start', 'La fecha de inicio es un campo requerido.').custom(isDate),
+        check('end', 'La fecha de finalización es un campo requerido.').custom(isDate),
+        validarCampos
+    ], actualizarEvento);
 
 // Borrar Evento
 router.delete('/:id', eliminarEvento);
