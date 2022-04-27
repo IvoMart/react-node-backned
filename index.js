@@ -6,6 +6,10 @@ require('dotenv').config();
 
 const app = express();
 /**
+ * Cors
+ */
+app.use(cors());
+/**
  * DB
  */
 const dbConnection = dbConn();
